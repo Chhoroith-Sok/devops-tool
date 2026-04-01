@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branch: [main]
+    branches: [main]
   pull_request:
-    branch: [main]
+    branches: [main]
 
 jobs:
 
@@ -27,19 +27,19 @@ jobs:
           pip install pytest
       
       - name: Lancer les tests
-        run: pytest test_devops_tools.py
+        run: pytest test_devops_tools.py -v
 
-build:
-  name: Build image Docker
-  runs-on: ubuntu-latest
-  needs: test
+  build:
+    name: Build image Docker
+    runs-on: ubuntu-latest
+    needs: test
 
-  steps:
-    - name: Checkout du code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
 
-    - name: Build de l'image
-      run: docker build -t devops-tool:${{ github.sha }}
+      - name: Build de l'image
+        run: docker build -t devops-tool:${{ github.sha }}
 
-    - name: Vérifie l'image
-      run: docker run devops-tool:${{ github.sha }}
+      - name: Vérifie l'image
+        run: docker run devops-tool:${{ github.sha }}
