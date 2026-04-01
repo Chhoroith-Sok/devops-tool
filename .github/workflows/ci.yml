@@ -43,3 +43,28 @@ jobs:
 
       - name: Vérifie l'image
         run: docker run devops-tool:${{ github.sha }}
+  
+  push:
+      name: Push sur Docker Hub
+      runs-on: ubuntu-latest
+      needs: build
+      if: github.ref == 'refs/heads/main'
+
+      steps:
+        - name: Checkout du code
+          uses: actions/checkout@v4
+
+        - name: Login du Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB.TOKEN }}
+
+        - name: Build et Push
+          uses: docker/build-push-action@v5
+          with:
+            context: .
+            push: true
+            tags: |
+              ${{ secrets.DOCKERHUB_USERNAME }}/devops-tool:latest
+              ${{ secrets.DOCKERHUB_USERNAME }}/devops-tool:${{ github.sha }}
