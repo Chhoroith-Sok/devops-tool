@@ -27,7 +27,7 @@ jobs:
           pip install pytest
       
       - name: Lancer les tests
-        run: pytest test_devops_tools.py -v
+        run: pytest test_devops_tool.py -v
 
   build:
     name: Build image Docker
