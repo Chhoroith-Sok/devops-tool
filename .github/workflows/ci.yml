@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build de l'image
-        run: docker build -t devops-tool:${{ github.sha }}
+        run: docker build -t devops-tool:${{ github.sha }} .
 
       - name: Vérifie l'image
         run: docker run devops-tool:${{ github.sha }}
